@@ -1,0 +1,20 @@
+﻿
+@if (CurrentSouvenir != null)
+{
+    <tr>
+        <td>@CurrentSouvenir.Name</td>
+        <td>@CurrentSouvenir.Maker</td>
+        <td>@CurrentSouvenir.Country</td>
+        <td>@CurrentSouvenir.Price</td>
+        <td>@CurrentSouvenir.Year</td>
+        <td>
+            <button class="btn btn-danger btn-sm" @onclick="(() => DeleteSouvenir.InvokeAsync(CurrentSouvenir))">Delete</button>
+        </td>
+    </tr>
+}
+
+@code {
+    [Parameter] public Souvenir CurrentSouvenir { get; set; }
+    [Parameter] public EventCallback<Souvenir> DeleteSouvenir { get; set; }
+}
+

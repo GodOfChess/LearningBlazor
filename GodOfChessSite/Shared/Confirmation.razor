@@ -1,0 +1,36 @@
+﻿@if (isDisplayed)
+{
+    <div class="row modal-backdrop show"></div>
+
+    <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal"
+         aria-hidden="true" style="display: block">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@Title</h5>
+                    <button class="close" type="button" @onclick="Cancel">&times;</button>
+                </div>
+                <div class="modal-body">
+                    @ChildContent
+                </div>
+                <div class="modal-footer text-center">
+                    <button class="btn btn-primary" type="button" @onclick="Confirm">Confirm</button>
+                    <button class="btn btn-secondary" type="button" @onclick="Cancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter] public string Title { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public EventCallback Confirm { get; set; }
+    [Parameter] public EventCallback Cancel { get; set; }
+
+    private bool isDisplayed;
+
+    public void Show() => isDisplayed = true;
+    public void Hide() => isDisplayed = false;
+}

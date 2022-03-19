@@ -1,0 +1,156 @@
+﻿@inject SouvenirService souvenirService
+@inject NavigationManager navManager
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead class="thead-light text-center">
+            <tr>
+                <th>Name</th>
+                <th>Maker</th>
+                <th>Country</th>
+                <th>Price</th>
+                <th>Year</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            <GenericList ListOfItems="TempSouvenirs">
+                <ItemTemplate Context="souvenir">
+                    <SouvenirItem CurrentSouvenir="souvenir" DeleteSouvenir="Delete" />
+                </ItemTemplate>
+            </GenericList>
+
+            <Confirmation Title="Delete Souvenir" @ref="confirmation" Cancel="OnCancel" Confirm="OnConfirm">
+                <ChildContent>
+                    <div class="text-left">Are you sure to delete the @tempItem.Name?</div>
+                </ChildContent>
+            </Confirmation>
+        </tbody>
+    </table>
+</div>
+
+<div class="row mt-3">
+    <div class="col text-center alert alert-primary mr-1">
+        <label>Maker</label>
+    </div>
+    <div class="col text-center alert alert-primary mr-1">
+        <label>Country</label>
+    </div>
+    <div class="col text-center alert alert-primary mr-1">
+        <label>Price &lt;</label>
+    </div>
+    <div class="col text-center alert alert-primary mr-1">
+        <label>Year</label>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col text-center">
+        <input type="text" class="form-control" @bind="maker" />
+    </div>
+    <div class="col text-center">
+        <input type="text" class="form-control" @bind="country" />
+    </div>
+    <div class="col text-center">
+        <input type="text" class="form-control" @bind="price" />
+    </div>
+    <div class="col text-center">
+        <input type="text" class="form-control" @bind="year" />
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col text-center">
+        <button class="btn btn-success btn-lg" @onclick="ApplyFilters">Apply</button>
+    </div>
+</div>
+
+
+@code {
+    [Parameter] public List<Souvenir> TempSouvenirs { get; set; }
+    [Parameter] public List<Souvenir> StaticSouvenirs { get; set; }
+    private Confirmation confirmation;
+    private Souvenir tempItem;
+
+    private string maker = String.Empty, country = String.Empty, price = String.Empty, year = String.Empty;
+
+    private void Delete(Souvenir souvenir)
+    {
+        tempItem = souvenir;
+        confirmation.Show();
+    }
+
+    private void OnConfirm()
+    {
+        souvenirService.DeleteSouvenirAsync(tempItem);
+        navManager.NavigateTo("database", true);
+        confirmation.Hide();
+    }
+
+    private void OnCancel()
+    {
+        confirmation.Hide();
+    }
+
+    private void ApplyFilters()
+    {
+        TempSouvenirs.Clear();
+        if (maker != String.Empty && year != String.Empty)
+        {
+            foreach (var souvenir in StaticSouvenirs)
+            {
+                if (souvenir.Maker == maker && souvenir.Year == Convert.ToInt32(year))
+                {
+                    TempSouvenirs.Add(souvenir);
+                }
+            }
+        }
+        else if (maker != String.Empty)
+        {
+            foreach (var souvenir in StaticSouvenirs)
+            {
+                if (souvenir.Maker == maker)
+                {
+                    TempSouvenirs.Add(souvenir);
+                }
+            }
+        }
+        else if (country != String.Empty)
+        {
+            foreach (var souvenir in StaticSouvenirs)
+            {
+                if (souvenir.Country == country)
+                {
+                    TempSouvenirs.Add(souvenir);
+                }
+            }
+        }
+        else if (price != String.Empty)
+        {
+            foreach (var souvenir in StaticSouvenirs)
+            {
+                if (souvenir.Price < Convert.ToInt32(price))
+                {
+                    TempSouvenirs.Add(souvenir);
+                }
+            }
+        }
+        else if (year != String.Empty)
+        {
+            foreach (var souvenir in StaticSouvenirs)
+            {
+                if (souvenir.Year == Convert.ToInt32(year))
+                {
+                    TempSouvenirs.Add(souvenir);
+                }
+            }
+        }
+        else
+        {
+            foreach (var souvenir in StaticSouvenirs)
+            {
+                TempSouvenirs.Add(souvenir);
+            }
+        }
+    }
+}

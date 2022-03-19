@@ -1,0 +1,67 @@
+﻿@page "/"
+
+@inject IRepository repository
+
+<div class="row">
+    <div class="col text-center">
+        <h1>GodOfChess DB</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col text-center">
+        <h2>All games from GitHub</h2>
+    </div>
+</div>
+
+<GameListTable Games="games" />
+<IndividualGame CurrentGame="randomGame" IsTable="false" Switch="SwitchGame" />
+
+<div class="row text-center mt-2">
+    <div class="col">
+        <button class="btn btn-success" @onclick="AddNewGame">Add Game</button>
+    </div>
+</div>
+
+@code
+{
+    private List<Game> games;
+    private Random rnd;
+    private Game randomGame;
+
+    protected async override Task OnInitializedAsync()
+    {
+        await Task.Delay(3000);
+
+        games = repository.GetAllGames();
+        rnd = new Random();
+        randomGame = games[rnd.Next(0, games.Count)];
+    }
+
+    private void SwitchGame()
+    {
+        if (games.Count >= 2)
+        {
+            randomGame = games[rnd.Next(0, games.Count)];
+        }
+        else if (games.Count == 1)
+        {
+            randomGame = games[0];
+        }
+        else
+        {
+            randomGame = new Game()
+            {
+                Title = "No items in array",
+                ReleaseDate = DateTime.Now
+            };
+        }
+    }
+
+    private void AddNewGame()
+    {
+        games.Add(new Game() { Title = "Test Game", Genre = "Test", ReleaseDate = DateTime.Today });
+    }
+}
+
+

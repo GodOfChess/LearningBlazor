@@ -1,0 +1,53 @@
+﻿<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead class="thead-light text-center">
+            <tr>
+                <th>Title</th>
+                <th>Genre</th>
+                <th>Release Date</th>
+                <th><input type="checkbox" @bind="isDisplayed" /></th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            <GenericList ListOfItems="Games">
+                <ItemTemplate Context="game">
+                    <IndividualGame CurrentGame="game" IsTable="true" Delete="DeleteGame" IsDisplayed="isDisplayed"/>
+                </ItemTemplate>
+            </GenericList>
+
+            <Confirmation Title="Delete Game" @ref="confirmation" Cancel="OnCancel" Confirm="OnConfirm">
+                <ChildContent>
+                    <div class="text-left">Are you sure to delete the @tempGame.Title?</div>
+                </ChildContent>
+            </Confirmation>
+        </tbody>
+    </table>
+</div>
+
+@code
+{
+    [Parameter] public List<Game> Games { get; set; }
+
+    private bool isDisplayed = false;
+    private Random rnd;
+    private Confirmation confirmation;
+    private Game tempGame;
+
+    private void DeleteGame(Game game)
+    {
+        tempGame = game;
+        confirmation.Show();
+    }
+
+    private void OnConfirm()
+    {
+        Games.Remove(tempGame);
+        confirmation.Hide();
+    }
+
+    private void OnCancel()
+    {
+        confirmation.Hide();
+    }
+}
+

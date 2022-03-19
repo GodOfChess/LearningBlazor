@@ -1,0 +1,12 @@
+﻿<div class="row text-center mt-5">
+    <div class="col">
+        @if (URL != null)
+        {
+            <img src="@URL" style="width: 400px; height: 200px;" />
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public string URL { get; set; }
+}

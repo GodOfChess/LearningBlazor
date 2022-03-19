@@ -1,0 +1,39 @@
+﻿@typeparam TItem
+
+@if (ListOfItems == null)
+{
+    if (NullList != null)
+    {
+        @NullList
+    }
+    else
+    {
+        <img src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!bw340" height="200" />
+    }
+}
+else if (ListOfItems.Count == 0)
+{
+    if (EmptyList != null)
+    {
+        @EmptyList
+    }
+    else
+    {
+        <img src="https://cdn.dribbble.com/users/1753953/screenshots/3818675/animasi-emptystate.gif" height="200" />
+    }
+}
+else
+{
+    @foreach (var item in ListOfItems)
+    {
+        @ItemTemplate(item);
+    }
+}
+
+@code {
+    [Parameter] public RenderFragment NullList { get; set; }
+    [Parameter] public RenderFragment EmptyList { get; set; }
+
+    [Parameter] public RenderFragment<TItem> ItemTemplate { get; set; }
+    [Parameter] public List<TItem> ListOfItems { get; set; }
+}

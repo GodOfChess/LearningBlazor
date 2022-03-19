@@ -1,0 +1,30 @@
+﻿@page "/database"
+@inject SouvenirService souvenirService
+@inject NavigationManager NavigationManager
+
+<h1 class="text-center">Souvenirs DataBase</h1>
+
+<div class="row mt-3 mb-3">
+    <div class="col">
+        <button class="btn btn-primary" @onclick="Navigate">Add Souvenir</button>
+    </div>
+</div>
+
+<SouvenirsListTable TempSouvenirs="tempSouvenirs" StaticSouvenirs="souvenirs"/>
+
+
+@code {
+    private List<Souvenir> souvenirs;
+    private List<Souvenir> tempSouvenirs;
+
+    protected override async Task OnInitializedAsync()
+    {
+        souvenirs = await Task.Run(() => souvenirService.GetAllSouvenirsAsync());
+        tempSouvenirs = new List<Souvenir>(souvenirs);
+    }
+
+    private void Navigate()
+    {
+        NavigationManager.NavigateTo("database/addsouvenir");
+    }
+}

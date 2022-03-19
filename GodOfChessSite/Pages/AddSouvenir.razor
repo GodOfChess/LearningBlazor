@@ -1,0 +1,55 @@
+﻿@page "/database/addsouvenir"
+@inject SouvenirService souvenirService
+@inject NavigationManager NavigationManager
+
+<h2>Add Souvenir</h2>
+<hr />
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="Name" class="control-label">Name</label>
+                <input form="Name" class="form-control" @bind="@souvenir.Name" />
+            </div>
+            <div class="form-group">
+                <label for="Maker" class="control-label">Maker</label>
+                <input form="Maker" class="form-control" @bind="@souvenir.Maker" />
+            </div>
+            <div class="form-group">
+                <label for="Country" class="control-label">Country</label>
+                <input form="Country" class="form-control" @bind="@souvenir.Country" />
+            </div>
+            <div class="form-group">
+                <label for="Price" class="control-label">Price</label>
+                <input form="Price" class="form-control" @bind="@souvenir.Price" />
+            </div>
+            <div class="form-group">
+                <label for="Year" class="control-label">Year</label>
+                <input form="Year" class="form-control" @bind="@souvenir.Year" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@CreateSouvenir" value="Save" />
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    Souvenir souvenir = new Souvenir();
+    protected async void CreateSouvenir()
+    {
+        await souvenirService.AddSouvenirAsync(souvenir);
+        NavigationManager.NavigateTo("database");
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("database");
+    }
+}

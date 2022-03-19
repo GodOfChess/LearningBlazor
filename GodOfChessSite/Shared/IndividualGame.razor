@@ -1,0 +1,44 @@
+﻿
+@if (IsTable == false && CurrentGame != null)
+{
+    <div class="row text-center alert alert-info">
+        <div class="col">
+            <p>@CurrentGame.Title</p>
+            <p>@CurrentGame.Genre</p>
+            <p>@CurrentGame.ReleaseDate.ToShortDateString()</p>
+        </div>
+    </div>
+
+    <div class="row text-center">
+        <div class="col">
+            <button class="btn btn-info" @onclick="Switch">Switch Game</button>
+        </div>
+    </div>
+}
+else
+{
+    if (CurrentGame != null)
+    {
+        <tr>
+            <td>@CurrentGame.Title</td>
+            <td>@CurrentGame.Genre</td>
+            <td>@CurrentGame.ReleaseDate.ToShortDateString()</td>
+            <td>
+                @if (IsDisplayed)
+                {
+                    <button class="btn btn-danger btn-sm" @onclick="(() => Delete.InvokeAsync(CurrentGame))">Delete</button>
+                }
+            </td>
+        </tr>
+    }
+
+}
+
+
+@code {
+    [Parameter] public Game CurrentGame { get; set; }
+    [Parameter] public bool IsTable { get; set; }
+    [Parameter] public bool IsDisplayed { get; set; }
+    [Parameter] public EventCallback<Game> Delete { get; set; }
+    [Parameter] public EventCallback Switch { get; set; }
+}

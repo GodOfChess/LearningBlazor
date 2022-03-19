@@ -1,0 +1,67 @@
+﻿@page "/imgsender"
+
+<div class="row alert alert-secondary text-center">
+    <div class="col">
+        <h1>Задание №7</h1>
+    </div>
+</div>
+
+<div class="row text-center mt-5">
+    <div class="col">
+        <button class="btn btn-info btn-lg" @onclick="(() => SwitchImg(1))">IT-технологии</button>
+    </div>
+    <div class="col">
+        <button class="btn btn-warning btn-lg" @onclick="(() => SwitchImg(2))">Автомобили</button>
+    </div>
+    <div class="col">
+        <button class="btn btn-success btn-lg" @onclick="(() => SwitchImg(3))">Природа</button>
+    </div>
+</div>
+
+<Image URL="@url" />
+
+@code
+{
+    private List<string> Nature, Cars, IT;
+    private string url;
+    private Random rnd;
+
+    protected override void OnInitialized()
+    {
+        rnd = new Random();
+        Nature = new List<string>()
+        {
+            "https://ktonanovenkogo.ru/image/priroda-gora.jpg",
+            "https://www.vseznaika.org/wp-content/uploads/2016/03/pic-00892.jpg",
+            "https://icocnews.ru/wp-content/uploads/2015/09/priroda.jpg",
+        };
+        Cars = new List<string>()
+        {
+            "https://cdn5.vedomosti.ru/image/2020/8/14dh54/original-1gbq.jpg",
+            "https://s0.rbk.ru/v6_top_pics/media/img/8/25/756462167448258.jpg",
+            "https://китайские-автомобили.рф/wp-content/uploads/2021/07/li_one_1_1000.jpg",
+        };
+        IT = new List<string>()
+        {
+            "https://proforientator.ru/publications/articles/it_sfera.jpg",
+            "https://yablyk.com/wp-content/uploads/2017/05/IT_Careers.jpg",
+            "https://syktsu.ru/upload/iblock/b2d/9a0b28b16009fa47a5a1a8df70046ff7.jpg",
+        };
+    }
+
+    private void SwitchImg(int id)
+    {
+        if (id == 1)
+        {
+            url = IT[rnd.Next(0, IT.Count)];
+        }
+        else if (id == 2)
+        {
+            url = Cars[rnd.Next(0, Cars.Count)];
+        }
+        else if (id == 3)
+        {
+            url = Nature[rnd.Next(0, Nature.Count)];
+        }
+    }
+}
