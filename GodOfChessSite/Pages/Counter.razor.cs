@@ -13,7 +13,8 @@ namespace GodOfChessSite.Pages
         [Inject] TransientService transient { get; set; }
 
         private int currentCount = 0;
-        private List<Game> games;
+
+        [CascadingParameter] AppStyle styles { get; set; }
 
         private void IncrementCount()
         {

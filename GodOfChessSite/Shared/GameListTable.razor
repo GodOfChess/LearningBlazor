@@ -1,5 +1,17 @@
-﻿<div class="table-responsive">
-    <table class="table table-striped table-bordered">
+﻿<div class="row mb-3">
+    <div class="col">
+        <select class="btn btn-toolbar border dropdown-toggle text-left" @onchange="ChangeTableStyle">
+            <option selected value="">Choose Style</option>
+            @foreach (var item in styles.TableStyles)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table @currentTableStyle table-bordered">
         <thead class="thead-light text-center">
             <tr>
                 <th>Title</th>
@@ -27,6 +39,9 @@
 @code
 {
     [Parameter] public List<Game> Games { get; set; }
+    [CascadingParameter] AppStyle styles { get; set; }
+
+    private string currentTableStyle = "table-striped";
 
     private bool isDisplayed = false;
     private Random rnd;
@@ -48,6 +63,11 @@
     private void OnCancel()
     {
         confirmation.Hide();
+    }
+
+    private void ChangeTableStyle(ChangeEventArgs currentItem)
+    {
+        currentTableStyle = currentItem.Value.ToString();
     }
 }
 

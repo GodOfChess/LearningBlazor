@@ -6,6 +6,10 @@
             <p>@CurrentGame.Title</p>
             <p>@CurrentGame.Genre</p>
             <p>@CurrentGame.ReleaseDate.ToShortDateString()</p>
+            @if (CurrentGame.Title.Equals("DarkEscape") && styles.RandomPhrases != null)
+            {
+                <p>@styles.RandomPhrases[rnd.Next(0, styles.RandomPhrases.Count)]</p>
+            }
         </div>
     </div>
 
@@ -41,4 +45,7 @@ else
     [Parameter] public bool IsDisplayed { get; set; }
     [Parameter] public EventCallback<Game> Delete { get; set; }
     [Parameter] public EventCallback Switch { get; set; }
+
+    [CascadingParameter] AppStyle styles { get; set; }
+    private Random rnd = new Random();
 }

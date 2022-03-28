@@ -11,7 +11,9 @@
         </div>
 
         <div class="content px-4">
-            @Body
+            <CascadingValue Value="appStyle">
+                @Body
+            </CascadingValue>
             @*<div class="row text-right mt-3">
                 <div class="col">
                     <p>Copyright by GodOfChess</p>
@@ -20,3 +22,7 @@
         </div>
     </div>
 </div>
+
+@code{
+    AppStyle appStyle = new AppStyle();
+}
